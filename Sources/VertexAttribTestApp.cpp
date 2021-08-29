@@ -16,7 +16,7 @@ VertexAttribTestApp::VertexAttribTestApp() :
 	_renderable = new Renderable(RenderableType::AttribPointer);
 	_renderable->SetPosition(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
-	generateRectangleWithoutIndex(glm::vec2(0.5f, 0.5f));
+	generateRectangleWithoutIndex(glm::vec2(1.0f, 1.0f));
 	registerRectangleToRenderable();
 }
 
@@ -27,62 +27,81 @@ VertexAttribTestApp::~VertexAttribTestApp()
 
 void VertexAttribTestApp::generateRectangleWithIndex(glm::vec2 size)
 {
-}
-
-void VertexAttribTestApp::generateRectangleWithoutIndex(glm::vec2 size)
-{
-	//_vertices = new GLfloat[18]
-	//{
-	//	-size.x / 2.0f, -size.y / 2.0f, 0.0f,	// lower left
-	//	 size.x / 2.0f, -size.y / 2.0f, 0.0f,	// lower right
-	//	-size.x / 2.0f,  size.y / 2.0f, 0.0f,	// upper left
-	//	-size.x / 2.0f,  size.y / 2.0f, 0.0f,	// upper left
-	//	 size.x / 2.0f, -size.y / 2.0f, 0.0f,	// lower right
-	//	 size.x / 2.0f,  size.y / 2.0f, 0.0f,	// upper right
-	//};
+	_vertexCount = 4;
 
 	_vertices = new GLfloat[12]
 	{
-		 0.5f,  0.5f, 0.0f,  // top right
-		 0.5f, -0.5f, 0.0f,  // bottom right
-		-0.5f, -0.5f, 0.0f,  // bottom left
-		-0.5f,  0.5f, 0.0f   // top left 
+		 size.x / 2.0f,  size.y / 2.0f, 0.0f,  // top right
+		 size.x / 2.0f, -size.y / 2.0f, 0.0f,  // bottom right
+		-size.x / 2.0f, -size.y / 2.0f, 0.0f,  // bottom left
+		-size.x / 2.0f,  size.y / 2.0f, 0.0f   // top left 
 	};
+
+	_colors = new GLfloat[12]
+	{
+		0.0f, 1.0f, 0.0f,	// top right
+		0.0f, 0.0f, 1.0f,	// bottom right
+		0.0f, 0.0f, 0.0f,	// bottom left
+		1.0f, 0.0f, 0.0f	// top left
+	};
+
+	_texCoords = new GLfloat[8]
+	{
+		1.0f, 1.0f,		// top right
+		1.0f, 0.0f,		// bottom right
+		0.0f, 0.0f,		// bottom left
+		0.0f, 1.0f		// top left
+	};
+
+	_elementCount = 6;
+
 	_indices = new GLuint[6]
 	{
 		0, 1, 3,  // first Triangle
 		1, 2, 3   // second Triangle
 	};
+}
+
+void VertexAttribTestApp::generateRectangleWithoutIndex(glm::vec2 size)
+{
+	_vertexCount = 6;
+
+	_vertices = new GLfloat[18]
+	{
+		 size.x / 2.0f,  size.y / 2.0f, 0.0f,  // top right
+		 size.x / 2.0f, -size.y / 2.0f, 0.0f,  // bottom right
+		-size.x / 2.0f,  size.y / 2.0f, 0.0f,  // top left 
+		 size.x / 2.0f, -size.y / 2.0f, 0.0f,  // bottom right
+		-size.x / 2.0f, -size.y / 2.0f, 0.0f,  // bottom left
+		-size.x / 2.0f,  size.y / 2.0f, 0.0f   // top left 
+	};
 
 	_colors = new GLfloat[18]
 	{
-		1.0f, 1.0f, 1.0f,	// lower left
-		0.0f, 0.0f, 1.0f,	// lower right
-		1.0f, 0.0f, 0.0f,	// upper left
-		1.0f, 0.0f, 0.0f,	// upper left
-		0.0f, 0.0f, 1.0f,	// lower right
-		0.0f, 1.0f, 0.0f,	// upper right
+		0.0f, 1.0f, 0.0f,	// top right
+		0.0f, 0.0f, 1.0f,	// bottom right
+		1.0f, 0.0f, 0.0f,	// top left
+		0.0f, 0.0f, 1.0f,	// bottom right
+		0.0f, 0.0f, 0.0f,	// bottom left
+		1.0f, 0.0f, 0.0f	// top left
 	};
 
 	_texCoords = new GLfloat[12]
 	{
-		 0.0f, 0.0f,	// lower left
-		 1.0f, 0.0f,	// lower right
-		 0.0f, 1.0f,	// upper left
-		 0.0f, 1.0f,	// upper left
-		 1.0f, 0.0f,	// lower right
-		 1.0f, 1.0f,	// upper right
+		1.0f, 1.0f,		// top right
+		1.0f, 0.0f,		// bottom right
+		0.0f, 1.0f,		// top left
+		1.0f, 0.0f,		// bottom right
+		0.0f, 0.0f,		// bottom left
+		0.0f, 1.0f		// top left
 	};
-
-	_vertexCount = 4;
-	_elementCount = 6;
 }
 
 void VertexAttribTestApp::registerRectangleToRenderable()
 {
 	_renderable->SetVertexBuffer(_vertices);
-	//_renderable->SetColorBuffer(_colors);
-	//_renderable->SetTexCoordBuffer(_texCoords);
+	_renderable->SetColorBuffer(_colors);
+	_renderable->SetTexCoordBuffer(_texCoords);
 	_renderable->SetIndexBuffer(_indices);
 	_renderable->SetVertexCount(_vertexCount);
 	_renderable->SetElementCount(_elementCount);

@@ -9,9 +9,7 @@ enum class RenderableType
 {
 	BeginEnd,
 	Pointer,
-	AttribPointer,
-	Test,
-	Test2
+	AttribPointer
 };
 
 class Renderable : public Object
@@ -35,11 +33,6 @@ public:
 private:
 	void clearAndGenVBO();
 
-	void testReady();
-	void testRender();
-	void test2Ready();
-	void test2Render();
-
 	void pointerReady();
 	void attribPointerReady();
 	void beginEndRender();
@@ -59,6 +52,4 @@ private:
 	RenderableType _type;
 	GLuint _vao;
 	GLuint _vbo[4];		// 0: vertices / 1: colors / 2: texCoords / 3: indices
-	GLuint VBO;
-	GLuint EBO;
 };
